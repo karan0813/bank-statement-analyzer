@@ -37,20 +37,31 @@ const BankPaymentsChart: React.FC<BankPaymentsChartProps> = ({ data }) => {
         label: "Total Amount",
         data: data.map((item) => item.totalAmount),
         backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
         yAxisID: "y",
       },
       {
         label: "Transaction Count",
         data: data.map((item) => item.count),
         backgroundColor: "rgba(153, 102, 255, 0.6)",
+        borderColor: "rgba(153, 102, 255, 1)",
+        borderWidth: 1,
         yAxisID: "y1",
       },
     ],
   };
 
-  const options = {
+  const options: any = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
+      x: {
+        ticks: {
+          maxRotation: 45,
+          minRotation: 45,
+        },
+      },
       y: {
         type: "linear" as const,
         display: true,
@@ -58,6 +69,13 @@ const BankPaymentsChart: React.FC<BankPaymentsChartProps> = ({ data }) => {
         title: {
           display: true,
           text: "Total Amount (₹)",
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+        },
+        ticks: {
+          callback: (value: number) => "₹" + value.toLocaleString(),
         },
       },
       y1: {
@@ -70,6 +88,13 @@ const BankPaymentsChart: React.FC<BankPaymentsChartProps> = ({ data }) => {
         title: {
           display: true,
           text: "Transaction Count",
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+        },
+        ticks: {
+          stepSize: 1,
         },
       },
     },
@@ -80,11 +105,38 @@ const BankPaymentsChart: React.FC<BankPaymentsChartProps> = ({ data }) => {
       title: {
         display: true,
         text: "Bank Payments Summary",
+        font: {
+          size: 16,
+          weight: "bold", // Change this to 'bold', 'normal', or a number (e.g., 400, 700)
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context: any) => {
+            let label = context.dataset.label || "";
+            if (label) {
+              label += ": ";
+            }
+            if (context.parsed.y !== null) {
+              label +=
+                context.datasetIndex === 0
+                  ? "₹" + context.parsed.y.toLocaleString()
+                  : context.parsed.y;
+            }
+            return label;
+          },
+        },
       },
     },
   };
 
-  return <Bar data={chartData} options={options} />;
+  return (
+    <div className="bg-white p-4 rounded-lg shadow-lg">
+      <div className="h-[500px] w-full">
+        <Bar data={chartData} options={options} />
+      </div>
+    </div>
+  );
 };
 
 export default BankPaymentsChart;

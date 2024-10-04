@@ -34,7 +34,6 @@ export default async function handler(
 
     const buffer = await fs.readFile(file.filepath);
     const data = await pdf(buffer);
-    console.log("data", data);
     const extractedData = extractDataFromPDF(data.text);
     const extractedDataPaiChart = extractDataFromPDFPAIChart(data.text);
     const BankPaymentname = extractDataFromPDFbankname(data.text);
