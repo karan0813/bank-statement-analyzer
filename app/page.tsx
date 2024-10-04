@@ -1,18 +1,26 @@
 "use client";
+
+import BankPaymentsChart from "@/Components/BankPaymentsChart";
 import ExpenseGraph from "@/Components/ExpenseGraph";
 import FileUpload from "@/Components/FileUpload";
-import React, { useEffect, useState } from "react";
-
-interface ExpenseData {
-  months: string[];
-  expenses: number[];
-}
+import PaymentMethodsPieChart from "@/Components/PaymentMethodsPieChart";
+import { ExpenseData } from "@/types";
+import React, { useState } from "react";
 
 const Home: React.FC = () => {
   const [expenseData, setExpenseData] = useState<ExpenseData | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<{
+    [key: string]: number;
+  } | null>(null);
+  const [bankPaymentData, setBankPaymentData] = useState<{
+    [key: string]: number;
+  } | null>(null);
 
-  const handleFileUpload = (data: ExpenseData) => {
-    setExpenseData(data);
+  const handleFileUpload = (data: any) => {
+    setExpenseData(data.extractedData);
+    console.log("data", data);
+    setPaymentMethods(data.extractedDataPaiChart);
+    setBankPaymentData(data.BankPaymentname);
   };
 
   return (
@@ -26,8 +34,22 @@ const Home: React.FC = () => {
             </h1>
             <FileUpload onFileUpload={handleFileUpload} />
             {expenseData && (
-              <div className="mt-12">
+              <div className="mt-12 space-y-8">
                 <ExpenseGraph data={expenseData} />
+                <div className="mt-8">
+                  <h2 className="text-2xl font-semibold mb-4 text-center text-violet-800">
+                    Payment Methods Distribution
+                  </h2>
+                  <PaymentMethodsPieChart data={paymentMethods} />
+                </div>
+                <div className="mt-8">
+                  <h2 className="text-2xl font-semibold mb-4 text-center text-violet-800">
+                    Payment Methods Distribution
+                  </h2>
+                  <BankPaymentsChart
+                    data={Array.isArray(bankPaymentData) ? bankPaymentData : []}
+                  />
+                </div>
               </div>
             )}
           </div>
