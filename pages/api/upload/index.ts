@@ -25,6 +25,7 @@ export default async function handler(
   const form = formidable();
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [fields, files] = await form.parse(req);
     const file = files.file?.[0];
 

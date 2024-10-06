@@ -51,7 +51,7 @@ const BankPaymentsChart: React.FC<BankPaymentsChartProps> = ({ data }) => {
       },
     ],
   };
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const options: any = {
     responsive: true,
     maintainAspectRatio: false,
@@ -112,6 +112,7 @@ const BankPaymentsChart: React.FC<BankPaymentsChartProps> = ({ data }) => {
       },
       tooltip: {
         callbacks: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           label: (context: any) => {
             let label = context.dataset.label || "";
             if (label) {

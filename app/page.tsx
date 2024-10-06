@@ -16,9 +16,9 @@ const Home: React.FC = () => {
     [key: string]: number;
   } | null>(null);
 
-  const handleFileUpload = (data: any) => {
+  // @ts-ignore
+  const handleFileUpload = (data) => {
     setExpenseData(data.extractedData);
-    console.log("data", data);
     setPaymentMethods(data.extractedDataPaiChart);
     setBankPaymentData(data.BankPaymentname);
   };
